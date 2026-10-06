@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portfolio Técnico de Tomás Kos Mardomingo - Proyectos IT y Sistemas">
+    <title>Proyectos | Tomás Kos - SysAdmin</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%BB%3C/text%3E%3C/svg%3E">
+
+    <!-- Fuentes Google y FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- VARIABLES GLOBALES (Idénticas al CV) --- */
+        :root {
+            --bg-base: #E8F0F8;
+            --bg-card: rgba(255, 255, 255, 0.88);
+            --text-main: #0F172A;
+            --text-muted: #475569;
+            --primary: #0284C7; 
+            --primary-light: #E0F2FE;
+            --primary-dark: #0369A1;
+            --accent: #0EA5E9; 
+            --success: #10B981;
+            --border: rgba(226, 232, 240, 0.8);
+            --shadow-hover: 0 15px 30px -5px rgba(2, 132, 199, 0.15);
+            /* Red de nodos */
+            --node-color: rgba(2, 132, 199, 0.4);
+            --line-color: rgba(2, 132, 199, 0.25);
+            --pulse-color: rgba(14, 165, 233, 0.9);
+        }
+
+        body.dark-theme {
+            --bg-base: #070B14;
+            --bg-card: rgba(30, 41, 59, 0.75);
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
+            --primary: #38BDF8; 
+            --primary-light: rgba(56, 189, 248, 0.15);
+            --primary-dark: #7DD3FC;
+            --accent: #0EA5E9; 
+            --border: rgba(51, 65, 85, 0.6);
+            --shadow-hover: 0 15px 30px -5px rgba(56, 189, 248, 0.2);
+            /* Red de nodos oscura */
+            --node-color: rgba(56, 189, 248, 0.6);
+            --line-color: rgba(56, 189, 248, 0.3);
+            --pulse-color: rgba(125, 211, 252, 0.95);
+        }
+
+        /* --- MULTI-IDIOMA --- */
+        body.lang-es .en { display: none !important; }
+        body.lang-en .es { display: none !important; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-base); color: var(--text-main); line-height: 1.7; overflow-x: hidden; transition: background-color 0.5s ease, color 0.5s ease; }
+
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-base); }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--primary), var(--accent)); border-radius: 10px; border: 2px solid var(--bg-base); }
+
+        /* --- RED INTERACTIVA FONDO --- */
+        .bg-effects-wrapper { position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none; overflow: hidden; }
+        #network-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+        .blob { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.5; animation: float 20s infinite alternate ease-in-out; }
+        .blob-1 { width: 500px; height: 500px; background: rgba(2, 132, 199, 0.15); top: -100px; left: -100px; }
+        .blob-2 { width: 600px; height: 600px; background: rgba(56, 189, 248, 0.1); bottom: -150px; right: -100px; animation-delay: -5s; }
+        @keyframes float { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(60px, 80px) scale(1.1); } }
+
+        /* --- NAVEGACIÓN PORTFOLIO --- */
+        nav { position: fixed; top: 0; width: 100%; background: var(--bg-card); backdrop-filter: blur(24px); border-bottom: 1px solid var(--border); z-index: 1000; padding: 1rem 0; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05); }
+        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 2rem; }
+        .nav-brand { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 1.3rem; color: var(--text-main); display: flex; align-items: center; gap: 8px; text-decoration: none; }
+        .nav-brand i { color: var(--primary); }
+        
+        .nav-links { display: flex; gap: 1.5rem; align-items: center; font-weight: 600; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; transition: color 0.3s; font-size: 0.95rem; }
+        .nav-links a:hover { color: var(--primary); }
+        .nav-links a.active { color: var(--primary); border-bottom: 2px solid var(--primary); }
+
+        .theme-btn { background: var(--bg-card); border: 1px solid var(--border); color: var(--text-main); font-weight: bold; width: 42px; height: 42px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
+        .theme-btn:hover { color: var(--primary); transform: scale(1.05); border-color: var(--primary); }
+
+        /* --- PRINCIPAL --- */
+        #portfolio-content { max-width: 1200px; margin: 130px auto 0; padding: 0 2rem; position: relative; z-index: 10; }
+
+        .page-header { text-align: center; margin-bottom: 3rem; }
+        .page-header h1 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 3.5rem; font-weight: 800; margin-bottom: 1rem; color: var(--text-main); }
+        .page-header p { font-size: 1.2rem; color: var(--text-muted); max-width: 600px; margin: 0 auto; }
+        .page-header i { color: var(--primary); }
+
+        /* --- CUADRÍCULA DE PROYECTOS --- */
+        .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2.5rem; padding-bottom: 4rem; }
+        
+        .port-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; transition: all 0.4s ease; display: flex; flex-direction: column; backdrop-filter: blur(16px); box-shadow: 0 10px 30px rgba(0,0,0,0.02); }
+        .port-card:hover { transform: translateY(-8px); border-color: var(--primary); box-shadow: var(--shadow-hover); }
+        
+        /* Área de la "Imagen" o Cabecera Visual del Proyecto */
+        .port-visual { height: 200px; background: linear-gradient(135deg, #0F172A, #0284C7); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+        body.dark-theme .port-visual { background: linear-gradient(135deg, #070B14, #0369A1); }
+        .port-visual i { font-size: 4.5rem; color: rgba(255,255,255,0.9); z-index: 1; transition: transform 0.5s ease; }
+        .port-card:hover .port-visual i { transform: scale(1.1); }
+        .port-visual::after { content: ''; position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 20px 20px; opacity: 0.5; }
+
+        .port-body { padding: 2rem; flex-grow: 1; display: flex; flex-direction: column; }
+        .port-title { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 0.8rem; color: var(--text-main); }
+        .port-desc { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 1.5rem; flex-grow: 1; line-height: 1.6; }
+        
+        .port-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+        .port-tag { font-size: 0.75rem; padding: 0.4rem 0.8rem; background: var(--bg-base); border: 1px solid var(--border); border-radius: 8px; color: var(--primary); font-weight: 600; font-family: 'Fira Code', monospace; }
+        
+        .port-links { display: flex; gap: 1.5rem; border-top: 1px solid var(--border); padding-top: 1.5rem; margin-top: auto; }
+        .port-link { font-size: 0.9rem; font-weight: 600; color: var(--text-main); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; transition: color 0.2s; }
+        .port-link:hover { color: var(--primary); }
+
+        /* --- DEVOPS FOOTER --- */
+        .devops-footer { margin-bottom: 2rem; padding: 1.5rem; text-align: center; border-radius: 12px; font-family: 'Fira Code', monospace; font-size: 0.85rem; color: var(--text-muted); background: var(--bg-card); border: 1px solid var(--border); backdrop-filter: blur(10px); }
+
+        /* ANIMACIONES SCROLL */
+        .reveal-up { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+        .reveal-up.active { opacity: 1; transform: translate(0); }
+        .delay-1 { transition-delay: 0.1s; } .delay-2 { transition-delay: 0.2s; } .delay-3 { transition-delay: 0.3s; }
+
+        @media (max-width: 900px) {
+            .nav-container { flex-direction: column; gap: 1rem; padding: 1rem; }
+            #portfolio-content { margin-top: 160px; padding: 0 1rem; }
+            .page-header h1 { font-size: 2.5rem; }
+            .portfolio-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body class="lang-es">
+
+    <!-- FONDOS INTERACTIVOS -->
+    <div class="bg-effects-wrapper">
+        <canvas id="network-canvas"></canvas>
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <!-- NAV -->
+    <nav id="main-nav">
+        <div class="nav-container">
+            <!-- Se corrige el logo para que también vuelva al CV -->
+            <a href="../cv/index.html" class="nav-brand"><i class="fa-solid fa-server"></i> Tomás Kos</a>
+            <div class="nav-links">
+                <!-- ENLACE CORREGIDO AL CV -->
+                <a href="../cv/index.html"><i class="fa-solid fa-file-lines"></i> <span class="es">Mi CV</span><span class="en">My CV</span></a>
+                <a href="#" class="active"><i class="fa-solid fa-network-wired"></i> Portfolio</a>
+                <button class="theme-btn" id="lang-toggle" aria-label="Cambiar Idioma">EN</button>
+                <button class="theme-btn" id="theme-toggle" aria-label="Cambiar Tema"><i class="fa-solid fa-moon"></i></button>
+            </div>
+        </div>
+    </nav>
+
+    <main id="portfolio-content">
+        
+        <div class="page-header reveal-up">
+            <h1><i class="fa-solid fa-diagram-project"></i> Portfolio Técnico</h1>
+            <p class="es">Selección de despliegues de infraestructura, arquitecturas de red y automatización de sistemas.</p>
+            <p class="en">Selection of infrastructure deployments, network architectures, and system automation.</p>
+        </div>
+
+        <div class="portfolio-grid">
+            
+            <!-- PROYECTO 1 -->
+            <article class="port-card reveal-up delay-1">
+                <div class="port-visual" style="background: linear-gradient(135deg, #1e1b4b, #4338ca);">
+                    <i class="fa-solid fa-broadcast-tower"></i>
+                </div>
+                <div class="port-body">
+                    <h3 class="port-title"><span class="es">Infraestructura de Streaming</span><span class="en">Streaming Infrastructure</span></h3>
+                    <p class="port-desc">
+                        <span class="es">Despliegue de un servidor de broadcast bajo entorno Linux (Raspberry Pi OS Lite). Securización del flujo de datos con Icecast e integración con OBS Studio para transmisiones en directo de alta disponibilidad.</span>
+                        <span class="en">Deployment of a broadcast server under a Linux environment (Raspberry Pi OS Lite). Data stream securization with Icecast and OBS Studio integration for high-availability live transmissions.</span>
+                    </p>
+                    <div class="port-tags">
+                        <span class="port-tag">Linux</span>
+                        <span class="port-tag">Raspberry Pi</span>
+                        <span class="port-tag">Icecast</span>
+                    </div>
+                    <div class="port-links">
+                        <a href="https://github.com/tomaskosmardomingo" target="_blank" class="port-link"><i class="fa-brands fa-github"></i> <span class="es">Ver Repositorio</span><span class="en">View Repo</span></a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- PROYECTO 2 -->
+            <article class="port-card reveal-up delay-2">
+                <div class="port-visual" style="background: linear-gradient(135deg, #064e3b, #059669);">
+                    <i class="fa-solid fa-cloud"></i>
+                </div>
+                <div class="port-body">
+                    <h3 class="port-title">Cloud Privada (Self-Hosted)</h3>
+                    <p class="port-desc">
+                        <span class="es">Arquitectura e implementación de almacenamiento autoalojado en Ubuntu Server. Gestión avanzada de volúmenes cifrados, configuración de políticas ACL y sincronización remota mediante protocolos seguros.</span>
+                        <span class="en">Architecture and implementation of self-hosted storage on Ubuntu Server. Advanced management of encrypted volumes, ACL policy configuration, and remote synchronization via secure protocols.</span>
+                    </p>
+                    <div class="port-tags">
+                        <span class="port-tag">Ubuntu Server</span>
+                        <span class="port-tag">Storage</span>
+                        <span class="port-tag">Security</span>
+                    </div>
+                    <div class="port-links">
+                        <a href="https://github.com/tomaskosmardomingo" target="_blank" class="port-link"><i class="fa-brands fa-github"></i> <span class="es">Ver Código</span><span class="en">View Code</span></a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- PROYECTO 3 -->
+            <article class="port-card reveal-up delay-3">
+                <div class="port-visual" style="background: linear-gradient(135deg, #7f1d1d, #dc2626);">
+                    <i class="fa-solid fa-diagram-project"></i>
+                </div>
+                <div class="port-body">
+                    <h3 class="port-title"><span class="es">Arquitectura Corporativa LAN/WAN</span><span class="en">Corporate LAN/WAN Architecture</span></h3>
+                    <p class="port-desc">
+                        <span class="es">Diseño completo de topología de red simulada en Cisco Packet Tracer. Implementación de enrutamiento OSPF, segmentación L2 con VLANs, direccionamiento dual IPv4/IPv6 y despliegue de servicios esenciales (DHCP/DNS).</span>
+                        <span class="en">Complete network topology design simulated in Cisco Packet Tracer. Implementation of OSPF routing, L2 segmentation with VLANs, dual IPv4/IPv6 addressing, and essential services deployment (DHCP/DNS).</span>
+                    </p>
+                    <div class="port-tags">
+                        <span class="port-tag">Cisco PT</span>
+                        <span class="port-tag">OSPF / VLANs</span>
+                        <span class="port-tag">IPv4 & IPv6</span>
+                    </div>
+                    <div class="port-links">
+                        <a href="https://github.com/tomaskosmardomingo" target="_blank" class="port-link"><i class="fa-brands fa-github"></i> <span class="es">Documentación</span><span class="en">Documentation</span></a>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+
+        <footer class="devops-footer reveal-up">
+            <i class="fa-solid fa-bolt" style="color: var(--success);"></i> <span class="es">Sistemas Operativos</span><span class="en">Systems Operational</span> | Tomas Kos © 2026
+        </footer>
+    </main>
+
+    <!-- SCRIPTS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // 1. SISTEMA DE RED INTERACTIVA (Idéntico al CV)
+            const canvas = document.getElementById('network-canvas');
+            const ctx = canvas.getContext('2d', { alpha: false });
+            let particlesArray = []; let activeConnections = []; let pulses = [];
+            let w = canvas.width = window.innerWidth; let h = canvas.height = window.innerHeight;
+            let mouse = { x: null, y: null, radius: 150 };
+
+            window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
+            window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
+            let resizeTimeout; window.addEventListener('resize', () => { clearTimeout(resizeTimeout); resizeTimeout = setTimeout(() => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; initNetwork(); }, 200); });
+
+            class Particle {
+                constructor() { this.size = (Math.random() * 2) + 1; this.x = Math.random() * w; this.y = Math.random() * h; this.directionX = (Math.random() * 1) - 0.5; this.directionY = (Math.random() * 1) - 0.5; }
+                update() {
+                    if (this.x > w || this.x < 0) this.directionX = -this.directionX;
+                    if (this.y > h || this.y < 0) this.directionY = -this.directionY;
+                    let dx = mouse.x - this.x; let dy = mouse.y - this.y;
+                    if (Math.sqrt(dx*dx + dy*dy) < mouse.radius + this.size) {
+                        if (mouse.x < this.x && this.x < w - this.size * 10) this.x += 2; if (mouse.x > this.x && this.x > this.size * 10) this.x -= 2;
+                        if (mouse.y < this.y && this.y < h - this.size * 10) this.y += 2; if (mouse.y > this.y && this.y > this.size * 10) this.y -= 2;
+                    }
+                    this.x += this.directionX; this.y += this.directionY;
+                }
+                draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--node-color').trim(); ctx.fill(); }
+            }
+            function initNetwork() { particlesArray = []; let num = Math.floor((w * h) / 9000); for (let i = 0; i < num; i++) particlesArray.push(new Particle()); }
+            function animateNetwork() {
+                requestAnimationFrame(animateNetwork); ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--bg-base').trim(); ctx.fillRect(0, 0, w, h);
+                for (let i = 0; i < particlesArray.length; i++) { particlesArray[i].update(); particlesArray[i].draw(); }
+                let maxDist = 18000; let rawColor = getComputedStyle(document.body).getPropertyValue('--line-color').trim(); let rgb = rawColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/); let col = rgb ? `${rgb[1]}, ${rgb[2]}, ${rgb[3]}` : '2, 132, 199';
+                activeConnections = [];
+                for (let a = 0; a < particlesArray.length; a++) {
+                    for (let b = a + 1; b < particlesArray.length; b++) {
+                        let dx = particlesArray[a].x - particlesArray[b].x; let dy = particlesArray[a].y - particlesArray[b].y; let dist = (dx * dx) + (dy * dy);
+                        if (dist < maxDist) {
+                            ctx.strokeStyle = `rgba(${col}, ${1 - (dist / maxDist)})`; ctx.lineWidth = 1; ctx.beginPath();
+                            ctx.moveTo(particlesArray[a].x, particlesArray[a].y); ctx.lineTo(particlesArray[b].x, particlesArray[b].y); ctx.stroke();
+                            activeConnections.push({ ax: particlesArray[a].x, ay: particlesArray[a].y, bx: particlesArray[b].x, by: particlesArray[b].y });
+                        }
+                    }
+                }
+                if (activeConnections.length > 0 && pulses.length < 4 && Math.random() < 0.02) pulses.push({ ...activeConnections[Math.floor(Math.random() * activeConnections.length)], t: 0 });
+                let pCol = getComputedStyle(document.body).getPropertyValue('--pulse-color').trim();
+                pulses.forEach(p => p.t += 0.02); pulses = pulses.filter(p => p.t < 1);
+                pulses.forEach(p => { ctx.beginPath(); ctx.arc(p.ax + (p.bx - p.ax) * p.t, p.ay + (p.by - p.ay) * p.t, 2.2, 0, Math.PI * 2); ctx.fillStyle = pCol; ctx.shadowColor = pCol; ctx.shadowBlur = 8; ctx.fill(); ctx.shadowBlur = 0; });
+            }
+            initNetwork(); animateNetwork();
+
+            // 2. TOGGLES
+            const themeBtn = document.getElementById('theme-toggle');
+            themeBtn.innerHTML = document.body.classList.contains('dark-theme') ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+            themeBtn.addEventListener('click', () => {
+                const icon = themeBtn.querySelector('i'); icon.classList.add('icon-flip');
+                setTimeout(() => { document.body.classList.toggle('dark-theme'); icon.className = document.body.classList.contains('dark-theme') ? 'fa-solid fa-sun' : 'fa-solid fa-moon'; }, 250);
+                setTimeout(() => icon.classList.remove('icon-flip'), 500);
+            });
+
+            const langBtn = document.getElementById('lang-toggle');
+            langBtn.addEventListener('click', () => {
+                const body = document.body;
+                if(body.classList.contains('lang-es')) { body.classList.replace('lang-es', 'lang-en'); document.documentElement.lang = 'en'; langBtn.innerText = 'ES'; } 
+                else { body.classList.replace('lang-en', 'lang-es'); document.documentElement.lang = 'es'; langBtn.innerText = 'EN'; }
+            });
+
+            // 3. SCROLL REVEAL
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('active'); obs.unobserve(entry.target); } });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.reveal-up').forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html>
